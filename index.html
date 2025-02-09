@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valentine's Proposal for Tanya Shankar</title>
+  <!-- Using Montserrat for a modern, professional look -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Global Reset & Base Styling */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html {
+      height: 100%;
+      width: 100%;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    /* Main Content Container */
+    .container {
+      background: rgba(255, 255, 255, 0.98);
+      padding: 40px 60px;
+      border-radius: 10px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 90%;
+      position: relative;
+      z-index: 2;
+    }
+    /* GIF Container Styling */
+    .gif-container {
+      margin: 0 auto 20px;
+    }
+    .gif-container img {
+      width: 250px;
+      height: 250px;
+      display: block;
+      margin: 0 auto;
+    }
+    /* Heading Styling */
+    h1 {
+      font-size: 2em;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    /* Button Styling */
+    .btn {
+      cursor: pointer;
+      padding: 15px 30px;
+      margin: 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+    #yesButton {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+    #yesButton:hover { background-color: #c0392b; }
+    #noButton {
+      background-color: #95a5a6;
+      color: #fff;
+    }
+    #noButton:hover { background-color: #7f8c8d; }
+    /* Response and No Messages */
+    #response {
+      margin-top: 30px;
+      font-size: 1.2em;
+      color: #2c3e50;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    #noMessages {
+      margin-top: 20px;
+      font-size: 1em;
+      color: #d35400;
+    }
+    /* Modal Overlay for Yes Response */
+    #modalOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      z-index: 10;
+    }
+    #modalOverlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+    #modalContent {
+      background: #fff;
+      padding: 40px 60px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    #modalContent h2 {
+      font-size: 1.8em;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- GIF replacing the 3D heart -->
+    <div class="gif-container">
+      <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcjE0dXQxOGNjdnlpZDVncmpjbDFoZXh1bGpiNjNhMGxhM2JvZDVtOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/10a8AOSeP6Rqfu/giphy.gif" alt="Animated Heart GIF">
+    </div>
+    <h1>Tanya Shankar, will you go out on Valentine's with me?</h1>
+    <div>
+      <button id="yesButton" class="btn">Yes</button>
+      <button id="noButton" class="btn">No</button>
+    </div>
+    <div id="response"></div>
+    <div id="noMessages"></div>
+  </div>
+  
+  <!-- Modal Overlay for Yes Response -->
+  <div id="modalOverlay">
+    <div id="modalContent">
+      <h2>yay i love you so much, i am so happy to have you as my girlfriend</h2>
+    </div>
+  </div>
+  
+  <!-- Hidden audio element. Replace "song.mp3" with your desired song file URL -->
+  <audio id="song" src="song.mp3" preload="auto"></audio>
+  
+  <script>
+    const yesButton = document.getElementById('yesButton');
+    const noButton = document.getElementById('noButton');
+    const responseDiv = document.getElementById('response');
+    const noMessagesDiv = document.getElementById('noMessages');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const audio = document.getElementById('song');
+    
+    let yesScale = 1;
+    let noScale = 1;
+    
+    yesButton.addEventListener('click', () => {
+      // Show the modal overlay with the loving message
+      modalOverlay.classList.add('show');
+      responseDiv.textContent = "";
+      responseDiv.style.opacity = 1;
+      // Play the song from the beginning
+      audio.currentTime = 0;
+      audio.play().catch((e) => console.error("Playback failed:", e));
+      // Hide the modal after a few seconds (adjust timing as desired)
+      setTimeout(() => {
+        modalOverlay.classList.remove('show');
+      }, 5000);
+    });
+    
+    noButton.addEventListener('click', () => {
+      // Append "please say yes" each time "No" is clicked
+      const plea = document.createElement('p');
+      plea.textContent = "please say yes";
+      noMessagesDiv.appendChild(plea);
+      
+      // Dynamically adjust button sizes: grow the Yes button and shrink the No button
+      yesScale += 0.1;
+      noScale = Math.max(0.5, noScale - 0.1);
+      yesButton.style.transform = `scale(${yesScale})`;
+      noButton.style.transform = `scale(${noScale})`;
+    });
+  </script>
+</body>
+</html>
